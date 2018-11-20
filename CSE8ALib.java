@@ -1,12 +1,9 @@
-import java.awt.Color;
 import java.time.*;
 import java.text.*;
 import java.util.*;
 import java.io.*;
 import java.nio.*;
 import java.nio.file.*;
-import sound.*;
-import image.*;
 
 class CSE8ALib {
 
@@ -344,91 +341,6 @@ class CSE8ALib {
     }
     Arrays.sort(vals);
     return vals[0];
-  }
-
-
-  interface RowFilter {
-    boolean shouldKeep(String row);
-  }
-
-  public static String filter(String csv, RowFilter f) {
-    StringBuilder newCSV = new StringBuilder();
-    boolean onFirst = true;
-    for(String row: csv.split("\n")) {
-      if(onFirst) {
-        newCSV.append(row + "\n");
-        onFirst = false;
-        continue;
-      }
-      if(f.shouldKeep(row)) { newCSV.append(row + "\n"); }
-    }
-    return newCSV.toString();
-  }
-
-  public static int[] readSound(String path) {
-    SimpleSound sound = new SimpleSound(path);
-    SoundSample[] ss = sound.getSamples();
-    int rate = (int)sound.getSamplingRate();
-    if(rate == 22050) {
-      int[] samples = new int[ss.length];
-      for(int i = 0; i < ss.length; i += 1) {
-        samples[i] = ss[i].getValue();
-      }
-      return samples;
-    }
-    else if(rate == 44100) {
-      int[] samples = new int[ss.length / 2];
-      for(int i = 0; i < samples.length - 1; i += 2) {
-        samples[i] = ss[i * 2].getValue();
-      }
-      return samples;
-    }
-    else {
-      throw new RuntimeException("Unknown sampling rate from audio file: " + rate);
-    }
-  }
-
-  public static boolean play(int[] sound) {
-    new SimpleSound(sound).play();
-    return true;
-  }
-
-  public static boolean stopMusic() {
-    for(Playback p: SimpleSound.globalPlaybacks) {
-      p.stopPlaying();
-    }
-    return true;
-  }
-
-  public static boolean explore(int[] sound) {
-    new SimpleSound(sound).explore();
-    return true;
-  }
-
-  public static double PI = Math.PI;
-
-  public static boolean colorDisplay(Color color) {
-    new SimplePicture(100,100,color).explore();
-    return true;
-  }
-
-  public static boolean explore(Image picture) {
-    SimplePicture picToExplore = new SimplePicture(picture.getWidth(), picture.getHeight());
-    for (int i = 0; i < picture.size(); i += 1) {
-      picToExplore.setBasicPixel(i % picture.getWidth() , i / picture.getWidth() , picture.getPixels()[i].getRGB());
-    }
-    picToExplore.explore();
-    return true;
-  }
-
-  public static Image readImage(String path) {
-    SimplePicture pic = new SimplePicture(path);
-    Pixel[] pixels = pic.getPixels();
-    Color[] colors = new Color[pixels.length];
-    for (int i = 0; i < colors.length; i += 1) {
-      colors[i] = new Color(pixels[i].getRed(), pixels[i].getGreen(), pixels[i].getBlue());
-    }
-    return new Image(pic.getWidth(), pic.getHeight(), colors);
   }
 
 }
