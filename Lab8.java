@@ -4,7 +4,7 @@ class Lab8 {
     System.out.println("Hello, world!");
 
     String myString1 = "hello";
-    double myNumber1 = parseDouble(myString1);
+    double myNumber1 = CSE8ALib.parseDouble(myString1);
 
     int myNumber2 = divide(1.0, 3.0);
     
@@ -30,16 +30,6 @@ class Lab8 {
   // Takes two doubles and returns their quotient as a double
   public static double divide(double a, double b) {
     return a / b
-  }
-
-  // parseDouble from 8ALib.java
-  public static double parseDouble(String s) {
-    return Double.parseDouble(s);
-  }
-
-  // substring from 8ALib.java
-  public static String substring(String base, int beginIndex, int endIndex) {
-    return base.substring(beginIndex, endIndex);
   }
 
 }
